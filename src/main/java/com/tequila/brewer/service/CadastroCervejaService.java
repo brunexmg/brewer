@@ -17,5 +17,5 @@ public class CadastroCervejaService {
 	public void salvar(Cerveja cerveja) {
 		cervejas.save(cerveja);
 	}
-	
+	 
 }
