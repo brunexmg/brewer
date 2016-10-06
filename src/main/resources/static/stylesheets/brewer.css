@@ -1,4 +1,34 @@
+/*
+######################
+# UTILIDADES
+######################
+*/
+.bw-glyphicon-large {
+	font-size: 18px;
+}
+
+.bw-required > .control-label:after {
+	content: "*";
+}
+
+/*
+######################
+# COMPONENTES
+######################
+*/
+
+/* Field Action */
+
+.bw-field-action {
+	display: flex;
+}
+
+.bw-field-action__icon {
+	margin: 6px 0 0 5px;
+}
+
 /* Upload */
+
 .bw-upload {
 	padding: 15px;
 	border: 1px dashed #ddd;
@@ -26,31 +56,56 @@
     font-size: 500px;
 }
 
+/* Tabela Simples */
+.bw-tabela-simples {
+	margin-top: 15px;
+}
+
+.bw-tabela-simples tr th {
+	border-bottom-width: 1px;
+}
+
+.bw-tabela-simples tr td {
+	border-top: none;
+	border-bottom: 1px solid #e7eaec;
+	padding: 10px;
+	vertical-align:middle;
+}
+
 /*
-######################
-# UTILIDADES
-######################
-*/
-.bw-glyphicon-large {
-	font-size: 18px;
-}
-
-.bw-required > .control-label:after{
-	content: "*";
-}
-
-/*
-######################
-# COMPONENTES
-######################
+###################
+# PÁGINAS DO SISTEMA
+###################
 */
 
-/* Field Action */
-
-.bw-field-action {
-	display: flex;
+/* Colunas - Pesquisa de Cervejas */
+.table-cervejas-col-foto {
+	min-width: 50px;
+	width: 50px;
 }
 
-.bw-field-action__icon {
-	margin: 6px 0 0 5px;
+.table-cervejas-col-sku {
+	width: 50px;
+	text-align: center;
+}
+
+.table-cervejas-col-nome {
+	/*min-width: 200px; */
+}
+
+.table-cervejas-col-estilo {
+	width: 120px;
+}
+
+.table-cervejas-col-origem {
+	width: 100px;
+}
+
+.table-cervejas-col-valor {
+	width: 100px;
+	text-align: right;
+}
+
+.table-cervejas-col-acoes {
+	width: 80px;
 }

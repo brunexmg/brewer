@@ -70,6 +70,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		return resolver;
 	}
 	
+	/* Captura todos os recursos estáticos que não tem o controller e procura dentro de resource: classpath/static */
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
