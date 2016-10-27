@@ -28,8 +28,7 @@ public class FotosController {
 		 
 		 Thread thread = new Thread(new FotoStorageRunnable(files, resultado, fotoStorage));
 		 thread.start();
-		 
-		 System.out.println(">>>files " + files[0].getSize());
+
 		 return resultado;
 	}
 	
