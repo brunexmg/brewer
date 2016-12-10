@@ -60,7 +60,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		engine.addDialect(new BrewerDialect());
 		return engine;
 	}
-	
+
 	private ITemplateResolver templateResolver() {
 		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
 		resolver.setApplicationContext(applicationContext);
