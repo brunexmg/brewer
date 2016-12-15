@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.util.StringUtils;
 
 import com.tequila.brewer.validation.SKU;
 
@@ -43,7 +44,7 @@ public class Cerveja implements Serializable {
 	private String nome;
 	
 	@NotBlank(message = "A descrição é obrigatória")
-	@Size(max = 100, message = "O tamanho da descrição deve estar entre 1 e 100")
+	@Size(max = 150, message = "O tamanho da descrição deve estar entre 1 e 150")
 	private String descricao;
 	
 	@NotNull(message = "Valor é obrigatório")
@@ -156,7 +157,7 @@ public class Cerveja implements Serializable {
 	}
 	
 	public String getFoto() {
-		return foto;
+		return this.foto;
 	}
 
 	public void setFoto(String foto) {
@@ -171,6 +172,10 @@ public class Cerveja implements Serializable {
 		this.contentType = contentType;
 	}
 
+	public String getFotoOuMock() {
+		return !StringUtils.isEmpty(foto) ? foto : "cerveja-mock.png";
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

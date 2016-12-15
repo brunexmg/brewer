@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.tequila.brewer.service.exception.NomeEstiloJaCadastradoException;
 
 @ControllerAdvice
-public class ControleAdviceExceptionHandler {
+public class ControllerAdviceExceptionHandler {
 
 	@ExceptionHandler(NomeEstiloJaCadastradoException.class)
 	public ResponseEntity<String> handlerNomeEstiloJaCadastradoException(NomeEstiloJaCadastradoException e) {

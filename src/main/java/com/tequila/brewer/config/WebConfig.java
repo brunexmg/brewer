@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
@@ -25,6 +26,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.tequila.brewer.controller.CervejasController;
 import com.tequila.brewer.controller.converter.EstiloConverter;
 import com.tequila.brewer.thymeleaf.BrewerDialect;
@@ -34,6 +36,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @Configuration
 @ComponentScan(basePackageClasses = { CervejasController.class })
 @EnableWebMvc
+@EnableSpringDataWebSupport
 public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 	
 	private ApplicationContext applicationContext;
@@ -58,6 +61,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		engine.setTemplateResolver(templateResolver());
 		engine.addDialect(new LayoutDialect());
 		engine.addDialect(new BrewerDialect());
+		engine.addDialect(new DataAttributeDialect());
 		return engine;
 	}
 

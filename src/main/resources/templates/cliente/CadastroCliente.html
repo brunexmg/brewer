@@ -2,7 +2,8 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="layout/LayoutPadrao">
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorate="~{layout/LayoutPadrao}">
 
 <head>
 	<title>Cadstro de cliente</title>
@@ -31,20 +32,21 @@
 				<div class="col-sm-4 form-group bw-required">
 					<label for="tipoPessoa" class="control-label">Tipo pessoa</label>
 					<div>
-						<div class="radio radio-inline">
-							<input type="radio" name="tipoPessoa" id="fisica"/>
-							<label>Física</label>
-						</div>
-						<div class="radio radio-inline">
-							<input type="radio" name="tipoPessoa" id="juridica"/>
-							<label>Jurídica</label>
-						</div>
+						<th:block th:each="tipoPessoa : ${tiposPessoa}">						
+							<div class="radio radio-inline">
+								<input type="radio" name="tipoPessoa" class="js-radio-tipo-pessoa" 
+									th:id="|id_${tipoPessoa}" 
+									data:documento="${tipoPessoa.documento}" 
+									data:mascara="${tipoPessoa.mascara}" />
+								<label class="control-label" th:for="|id_${tipoPessoa}">[[${tipoPessoa.descricao}]]</label>
+							</div>
+						</th:block>
 					</div>
 				</div>
 				
 				<div class="col-sm-8 form-group bw-required">
 					<label for="cpfOuCnpj" class="control-label">CPF/CNPJ</label>
-					<input id="cpfOuCnpj" type="text" class="form-control"/>
+					<input id="cpfOuCnpj" type="text" class="form-control" disabled/>
 				</div>
 				
 			</div>
@@ -52,7 +54,7 @@
 			<div class="row">
 				<div class="col-sm-4 form-group bw-required">
 					<label for="telefone" class="control-label">Telefone</label>
-					<input id="telefone" type="text" class="form-control"/>
+					<input id="telefone" type="text" class="form-control  js-phone-number"/>
 				</div>
 				
 				<div class="col-sm-8 form-group bw-required">
@@ -88,16 +90,21 @@
 					<label for="estado" class="control-label">Estado</label>
 					<select id="estado" class="form-control">
 						<option value="">Selecione o estado</option>
-						<option value="1">Paraná</option>
+						<option th:each="estado : ${estados}" th:value="${estado.codigo}">[[${estado.nome}]]</option>
 					</select>						
 				</div>
 				
 				<div class="col-sm-4  form-group bw-required">
 					<label for="cidade" class="control-label">Cidade</label>
-					<select id="cidade" class="form-control">
-						<option value="">Selecione a cidade</option>
-						<option value="1">Leópolis</option>
-					</select>						
+					<div class="bw-field-action">
+						<select id="cidade" class="form-control" data:url="@{/cidades}" disabled>
+							<option value=""></option>
+							<option value="1">Leópolis</option>
+						</select>	
+						<div class="bw-field-action__icon  js-img-loading" style="display: none;">
+							<img th:src="@{/images/mini-loading.gif}" />
+						</div>
+					</div>					
 				</div>
 			</div>
 					
@@ -110,6 +117,10 @@
 			
 </section>
 
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/cliente.mascasa-cpf-cnpj.js}"></script>
+	<script th:src="@{/javascripts/cliente.combo-estado-cidade.js}"></script>
+</th:block>
 </body>
 </html>
 

@@ -38,7 +38,6 @@ Brewer.UploadFoto = (function() {
 		this.containerFotoCerveja.append(htmlFotoCerveja);
 		
 		$('.js-remove-foto').on('click', onRemoverFoto.bind(this));
-		
 	}
 	
 	function onRemoverFoto() {

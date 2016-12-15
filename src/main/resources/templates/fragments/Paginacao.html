@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+	
+<th:block th:fragment="pagination (pagina)">
+	<div class="col-sm-12 text-center" th:if="${not pagina.vazia}" th:remove="${pagina.unicaPagina} ? all">
+			<nav>
+				<ul class="pagination pagination-sm" th:with="paginaAtual = ${pagina.atual}">
+					<li th:class="${pagina.primeira} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+					</li>
+					
+					<li th:if="${(paginaAtual-2) > 0}">
+						<a th:href="${pagina.urlParaPagina(paginaAtual - 2)}"><span>...</span></a>
+					</li>
+					
+					<th:block th:each="p : ${#numbers.sequence(1,pagina.total)}" th:with="numeroPagina = ${p - 1} ">				
+
+						<li th:if="${p+1 >= paginaAtual && p-1 <= paginaAtual+2}" th:class="${paginaAtual == numeroPagina} ? active">
+							<a th:href="${pagina.urlParaPagina(numeroPagina)}"><span th:text="${p}">0</span></a>
+						</li>
+						
+					</th:block>	
+	
+					<li th:if="${(paginaAtual+3) < pagina.total}">
+						<a th:href="${pagina.urlParaPagina(paginaAtual + 2)}"><span>...</span></a>
+					</li>
+								
+					<li th:class="${pagina.ultima} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+</th:block>
+</html>
