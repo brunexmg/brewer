@@ -8,4 +8,5 @@ import com.tequila.brewer.model.Estado;
 @Repository
 public interface Estados extends JpaRepository<Estado, Long> {
 
+	
 }

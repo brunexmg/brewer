@@ -1,0 +1,2 @@
+ALTER TABLE cliente
+	ALTER cpf_cnpj SET NOT NULL;

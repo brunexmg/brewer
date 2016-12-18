@@ -1,6 +1,7 @@
 package com.tequila.brewer.model;
 
 import java.io.Serializable;
+import java.text.Normalizer;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,8 +27,10 @@ public class Cidade implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 	
+	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 	
+	@NotNull(message = "Obrigatório informar um estado")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "codigo_estado")
 	@JsonIgnore
@@ -47,6 +53,16 @@ public class Cidade implements Serializable {
 	}
 	public void setEstado(Estado estado) {
 		this.estado = estado;
+	}
+	
+	public String getNomeSemAcento() {
+		this.nome = Normalizer.normalize(this.nome, Normalizer.Form.NFD);
+	    this.nome = this.nome.replaceAll("[^\\p{ASCII}]", "");
+	    return this.nome;
+	}
+	
+	public boolean temEstado() {
+		return estado != null;
 	}
 	
 	@Override

@@ -77,6 +77,10 @@
 # PÁGINAS DO SISTEMA
 ###################
 */
+/* Colunas comuns */
+.table-col-acoes {
+	width: 80px;
+}
 
 /* Colunas - Pesquisa de Cervejas */
 .table-cervejas-col-foto {
@@ -110,6 +114,7 @@
 	width: 80px;
 }
 
+/* Colunas - Pesquisa de Estilos */
 .table-estilos-col-codigo {
 	width: 8px;
 	text-align: center;
@@ -120,3 +125,37 @@
 .table-estilos-col-acoes {
 	width: 80px;
 }
+
+/* Colunas - Pesquisa de Clientes */
+.table-clientes-col-nome {
+	
+}
+.table-clientes-col-tipo-pessoa {
+	width: 120px;
+	text-align: center;
+}
+.table-clientes-col-cpfcnpj {
+	width: 140px;
+	text-align: right;
+}
+.table-clientes-col-telefone {
+	width: 120px;
+	text-align: center;
+}
+.table-clientes-col-acoes {
+	
+}
+.table-clientess-col-cidade-estado {
+	width: 140px;
+	text-align: right;
+}
+
+/* Colunas - Pesquisa de Cidades */
+.table-cidades-col-nome {
+	
+}
+.table-cidades-col-estado {
+	width: 140px;
+	text-align: right;
+}
+
