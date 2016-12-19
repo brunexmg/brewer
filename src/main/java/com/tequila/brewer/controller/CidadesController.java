@@ -50,9 +50,20 @@ public class CidadesController {
 		return mv;
 	}
 	
+	@Cacheable(value = "cidadesCache", key = "#codigoEstado")
+	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	private @ResponseBody List<Cidade> pesquisarPorCodigoEstado(
+			@RequestParam(name = "estado", defaultValue = "-1") Long codigoEstado) {
+		
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {	}
+		
+		return cadastroCidadeService.procurarPorCodigoEstado(codigoEstado);
+	}
 
 	@PostMapping("/nova")
-	@CacheEvict(value = "cidades", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
+	@CacheEvict(value = "cidadesCache", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
 	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return nova(cidade);
@@ -67,17 +78,6 @@ public class CidadesController {
 		return new ModelAndView("redirect:/cidades/nova");
 	}
 
-	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	@Cacheable(value = "cidades", key = "#codigoEstado")
-	private @ResponseBody List<Cidade> pesquisarPorCodigoEstado(
-			@RequestParam(name = "estado", defaultValue = "-1") Long codigoEstado) {
-
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {	}
-		
-		return cidades.findByEstadoCodigo(codigoEstado);
-	}
 	
 	@GetMapping
 	public ModelAndView pesquisar(CidadeFilter cidadeFilter, BindingResult result

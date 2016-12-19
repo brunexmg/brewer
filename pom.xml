@@ -237,6 +237,13 @@
 		<version>${guava.version}</version>
 		<scope>compile</scope>
 	</dependency>
+	
+	<!-- Spring Context Support -->
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-context-support</artifactId>
+  		<scope>compile</scope>
+  	</dependency>
   	
   </dependencies>
   

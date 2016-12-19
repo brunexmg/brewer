@@ -16,6 +16,11 @@ public class CadastroCidadeService {
 	@Autowired
 	private Cidades cidades;
 	
+	@Transactional(readOnly = true)
+	public List<Cidade> procurarPorCodigoEstado(Long codigoEstado) {
+		return cidades.findByEstadoCodigo(codigoEstado);
+	}
+	
 	@Transactional
 	public void salvar(Cidade cidade) {
 		List<Cidade> cidadeExistente = cidades.procuraCidadePorEstado(cidade.getNome(), cidade.getEstado());
