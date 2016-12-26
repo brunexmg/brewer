@@ -1,11 +1,12 @@
 package com.tequila.brewer.repository.helper.cliente;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
@@ -53,12 +54,26 @@ public class ClientesImpl implements ClientesQueries {
 	private void adicionarFiltro(ClienteFilter filtro, Criteria criteria) {
 		if (filtro != null) {		
 			if (!StringUtils.isEmpty(filtro.getNome())) {
-				criteria.add(Restrictions.ilike("nome", filtro.getNome(), MatchMode.ANYWHERE));
+				criteria.add(Restrictions.sqlRestriction("TRANSLATE({alias}.nome,'áàãéèíóòúç','aaaeeioouc') ILIKE  '%" +filtro.getNome() + "%'"));
+//				criteria.add(Restrictions.ilike("nome", filtro.getNome(), MatchMode.ANYWHERE));
 			}
 			if (!StringUtils.isEmpty(filtro.getCpfOuCnpj())) {
 				criteria.add(Restrictions.eq("cpfOuCnpj", filtro.getCpfCnpjSemFormatacao()));
 			}	
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(readOnly = true)
+	public List<Cliente> pesquisaNomeRapida(String nome) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Cliente.class);
+		
+		if (!StringUtils.isEmpty(nome)) {
+			criteria.add(Restrictions.sqlRestriction("TRANSLATE({alias}.nome,'áàãéèíóòúç','aaaeeioouc') ILIKE  '%" +nome + "%'"));
+		}
+		
+		return criteria.list();
 	}
 	
 }

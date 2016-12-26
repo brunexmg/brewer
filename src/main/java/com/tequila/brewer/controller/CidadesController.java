@@ -46,48 +46,46 @@ public class CidadesController {
 	public ModelAndView nova(Cidade cidade) {
 		ModelAndView mv = new ModelAndView("cidade/CadastroCidade");
 		mv.addObject("estados", estados.findAll());
-		
 		return mv;
 	}
 	
-	@Cacheable(value = "cidadesCache", key = "#codigoEstado")
+	@Cacheable(value = "cidades", key = "#codigoEstado")
 	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	private @ResponseBody List<Cidade> pesquisarPorCodigoEstado(
+	public @ResponseBody List<Cidade> pesquisarPorCodigoEstado(
 			@RequestParam(name = "estado", defaultValue = "-1") Long codigoEstado) {
-		
 		try {
-			Thread.sleep(500);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {	}
-		
-		return cadastroCidadeService.procurarPorCodigoEstado(codigoEstado);
+		return cidades.findByEstadoCodigo(codigoEstado);
 	}
-
+	
 	@PostMapping("/nova")
-	@CacheEvict(value = "cidadesCache", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
+	@CacheEvict(value = "cidades", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
 	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return nova(cidade);
 		}
+		
 		try {
 			cadastroCidadeService.salvar(cidade);
 		} catch (NomeCidadeJaCadastradaException e) {
 			result.rejectValue("nome", e.getMessage(), e.getMessage());
 			return nova(cidade);
 		}
-		attributes.addFlashAttribute("mensagem","Cidade salva com sucesso");
+		
+		attributes.addFlashAttribute("mensagem", "Cidade salva com sucesso!");
 		return new ModelAndView("redirect:/cidades/nova");
 	}
-
 	
 	@GetMapping
 	public ModelAndView pesquisar(CidadeFilter cidadeFilter, BindingResult result
-			,@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
+			, @PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("cidade/PesquisaCidades");
 		mv.addObject("estados", estados.findAll());
-		PageWrapper<Cidade> paginaWrapper = new PageWrapper<>(
-				cidades.filtrar(cidadeFilter, pageable), httpServletRequest);
-		mv.addObject("pagina", paginaWrapper);
 		
+		PageWrapper<Cidade> paginaWrapper = new PageWrapper<>(cidades.filtrar(cidadeFilter, pageable)
+				, httpServletRequest);
+		mv.addObject("pagina", paginaWrapper);
 		return mv;
 	}
 	

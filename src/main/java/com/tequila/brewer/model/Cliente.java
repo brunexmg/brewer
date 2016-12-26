@@ -22,6 +22,7 @@ import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 import org.hibernate.validator.group.GroupSequenceProvider;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tequila.brewer.model.validation.ClienteGroupSequenceProvider;
 import com.tequila.brewer.model.validation.group.CnpjGroup;
 import com.tequila.brewer.model.validation.group.CpfGroup;
@@ -57,6 +58,7 @@ public class Cliente implements Serializable {
 	private String email;
 	
 	@Embedded
+	@JsonIgnore
 	private Endereco endereco;
 
 	@PrePersist @PreUpdate

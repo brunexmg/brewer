@@ -1,6 +1,6 @@
 package com.tequila.brewer.service.exception;
 
-public class NomeCidadeJaCadastradaException  extends RuntimeException {
+public class NomeCidadeJaCadastradaException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	

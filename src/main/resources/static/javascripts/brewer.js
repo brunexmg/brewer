@@ -56,6 +56,44 @@ Brewer.MaskCep = (function() {
 	return MaskCep;
 }());
 
+Brewer.MaskDate = (function () {
+	function MaskDate() {
+		this.inputData = $('.js-date');
+	}
+	
+	MaskDate.prototype.enable = function() {
+		this.inputData.mask('00/00/0000');
+		this.inputData.datepicker({
+			orientation: 'bottom',
+			language: 'pt-BR',
+			autoclose: true
+		});
+	}
+	
+	return MaskDate;
+}());
+
+Brewer.Security = (function() {
+	
+	function Security() {
+		this.token = $('input[name=_csrf]').val();
+		this.header = $('input[name=_csrf_header]').val();
+	}
+	
+	Security.prototype.enable = function() {
+		$(document).ajaxSend(function(event, jqxhr, settings) {
+			jqxhr.setRequestHeader(this.header, this.token);
+		}.bind(this));
+	}
+	
+	return Security;
+}());
+
+Brewer.formatarMoeda = function(valor) {
+	numeral.locale('pt-br');
+	return numeral(valor).format('0,0.00');
+}
+
 $(function() {
 	var maskMoney = new Brewer.MaskMoney();
 	maskMoney.enable();
@@ -65,4 +103,10 @@ $(function() {
 	
 	var maskCep = new Brewer.MaskCep();
 	maskCep.enable();
+	
+	var maskDate = new Brewer.MaskDate();
+	maskDate.enable();
+	
+	var security = new Brewer.Security();
+	security.enable();
 });
