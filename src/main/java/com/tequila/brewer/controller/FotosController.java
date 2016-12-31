@@ -47,4 +47,9 @@ public class FotosController {
 		fotoStorage.apagarFotoTemporaria(nome);
 	}
 	
+	@RequestMapping(path = "/{nome:.*}", method = { RequestMethod.DELETE })
+	public void apagarFoto(@PathVariable String nome) {
+		fotoStorage.apagarFoto(nome);
+	}
+	
 }

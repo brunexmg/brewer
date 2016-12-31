@@ -13,8 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +31,7 @@ import com.tequila.brewer.repository.Estados;
 import com.tequila.brewer.repository.filter.ClienteFilter;
 import com.tequila.brewer.service.CadastroClienteService;
 import com.tequila.brewer.service.exception.CpfCnpjClienteJaCadastradoException;
+import com.tequila.brewer.service.exception.ImpossivelExcluirClienteException;
 
 @Controller
 @RequestMapping("/clientes")
@@ -87,16 +90,27 @@ public class ClientesController {
 		return clientes.pesquisaNomeRapida(nome);
 //		return clientes.findByNomeStartingWithIgnoreCase(nome);
 	}
-
-	private void validarTamanhoNome(String nome) {
-		if (StringUtils.isEmpty(nome) || nome.length() < 3) {
-			throw new IllegalArgumentException();
+	
+	@DeleteMapping("/{codigo}")
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("codigo") Cliente cliente) {
+		try {
+			cadastroClienteService.excluir(cliente);
+		} catch (ImpossivelExcluirClienteException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
+		
+		return ResponseEntity.ok().build();
 	}
 	
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<Void> tratarIllegalArgumentException(IllegalArgumentException e) {
 		return ResponseEntity.badRequest().build();
+	}
+	
+	private void validarTamanhoNome(String nome) {
+		if (StringUtils.isEmpty(nome) || nome.length() < 3) {
+			throw new IllegalArgumentException();
+		}
 	}
 	
 }

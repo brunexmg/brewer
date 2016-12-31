@@ -18,12 +18,13 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-10">
-					<h1>Cadastro de cerveja</h1>
+					<h1 th:if="${cerveja.nova}">Cadastro de cerveja</h1>
+					<h1 th:unless="${cerveja.nova}">Edição da cerveja '[[${cerveja.nome}]]'</h1>
 				</div>
 				<div class="col-xs-2">
 					<div class="aw-page-header-controls">
 						<a class="btn btn-default" th:href="@{/cervejas}">
-							<i class="fa fa-search"></i> <span class="hidden-xs hidden-sm">Pesquisa</span>
+							<i class="fa fa-search"></i> <span class="hidden-xs hidden-sm">Cervejas</span>
 						</a>
 					</div>
 				</div>
@@ -33,9 +34,12 @@
 	
 	<div class="container-fluid">
 		
-		<form method="POST" th:object="${cerveja}" th:action="@{/cervejas/novo}" class="form-vertical js-form-loading">
+		<form method="POST" th:object="${cerveja}" class="form-vertical js-form-loading"
+				th:action="${cerveja.nova} ? @{/cervejas/nova} : @{/cervejas/{codigo}(codigo=${cerveja.codigo})}">
 			
 			<brewer:message/>
+			
+			<input type="hidden" th:field="*{codigo}" />
 		
 			<div class="row">
 				<div class="col-sm-2  form-group  bw-required"  brewer:classforerror="sku">
@@ -126,6 +130,7 @@
 				<div class="form-group col-sm-12">
 					<input type="hidden" th:field="*{foto}"/>
 					<input type="hidden" th:field="*{contentType}" />
+					<input type="hidden" th:field="*{novaFoto}" />
 					
 					<label class="control-label">Foto</label>
 					

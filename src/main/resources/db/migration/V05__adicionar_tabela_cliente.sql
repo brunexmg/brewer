@@ -1,5 +1,5 @@
 CREATE TABLE cliente (
-	codigo SERIAL PRIMARY KEY,
+	codigo BIGSERIAL PRIMARY KEY,
 	nome VARCHAR(100) NOT NULL,
 	tipo_pessoa VARCHAR(15) NOT NULL,
 	cpf_cnpj VARCHAR(30),

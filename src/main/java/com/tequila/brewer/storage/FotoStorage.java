@@ -14,4 +14,8 @@ public interface FotoStorage {
 
 	public byte[] recuperar(String foto);
 	
+	public byte[] recuperarThumbnail(String foto);
+
+	public void apagarFoto(String foto);
+	
 }

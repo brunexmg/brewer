@@ -11,9 +11,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +30,7 @@ import com.tequila.brewer.repository.Cidades;
 import com.tequila.brewer.repository.Estados;
 import com.tequila.brewer.repository.filter.CidadeFilter;
 import com.tequila.brewer.service.CadastroCidadeService;
+import com.tequila.brewer.service.exception.ImpossivelExcluirCidadeException;
 import com.tequila.brewer.service.exception.NomeCidadeJaCadastradaException;
 
 @Controller
@@ -59,7 +63,7 @@ public class CidadesController {
 		return cidades.findByEstadoCodigo(codigoEstado);
 	}
 	
-	@PostMapping("/nova")
+	@PostMapping({"/nova", "{\\d+}"})
 	@CacheEvict(value = "cidades", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
 	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
@@ -79,13 +83,32 @@ public class CidadesController {
 	
 	@GetMapping
 	public ModelAndView pesquisar(CidadeFilter cidadeFilter, BindingResult result
-			, @PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
+			, @PageableDefault(size = 20) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("cidade/PesquisaCidades");
 		mv.addObject("estados", estados.findAll());
 		
 		PageWrapper<Cidade> paginaWrapper = new PageWrapper<>(cidades.filtrar(cidadeFilter, pageable)
 				, httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
+		return mv;
+	}
+	
+	@DeleteMapping("/{codigo}")
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable Long codigo) {
+		try {
+			cadastroCidadeService.excluir(codigo);			
+		} catch (ImpossivelExcluirCidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		
+		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable Long codigo) {
+		Cidade cidade = cidades.buscarComEstado(codigo);
+		ModelAndView mv = nova(cidade);
+		mv.addObject(cidade);
 		return mv;
 	}
 	

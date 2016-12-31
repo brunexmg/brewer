@@ -16,7 +16,7 @@
 					
 					<th:block th:each="p : ${#numbers.sequence(1,pagina.total)}" th:with="numeroPagina = ${p - 1} ">				
 
-						<li th:if="${p+1 >= paginaAtual && p-1 <= paginaAtual+2}" th:class="${paginaAtual == numeroPagina} ? active">
+						<li th:if="${(p+1 >= paginaAtual && p-1 <= paginaAtual+2)}" th:class="${paginaAtual == numeroPagina} ? active">
 							<a th:href="${pagina.urlParaPagina(numeroPagina)}"><span th:text="${p}">0</span></a>
 						</li>
 						

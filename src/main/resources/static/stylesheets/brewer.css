@@ -56,6 +56,13 @@
     font-size: 500px;
 }
 
+/* Solução do botão que não muda de cor */
+.has-error .input-group-btn .btn.btn-default {
+	color: #a94442;
+	border-color: #a94442;
+	background-color: #f2dede;
+}
+
 /* Tabela Simples */
 .bw-tabela-simples {
 	margin-top: 15px;
@@ -171,6 +178,29 @@
 	text-align: center;
 }
 
+/* Colunas - Pesquisa de Vendas */
+.table-vendas-col-codigo {
+	width: 5%;
+	text-align: center;
+}
+
+.table-vendas-col-cliente {
+	width: 30%;
+}
+.table-vendas-col-data-criacao {
+	width: 10%;
+}
+.table-vendas-col-valor-total {
+	width: 10%;
+}
+.table-vendas-col-vendedor {
+	width: 18%;
+	text-align: center;
+}
+.table-vendas-col-status {
+	width: 9%;
+}
+
 /*Tabela Cervejas Páginas de Venda */
 .bw-tabela-cervejas {
 	margin-bottom: 15px;
@@ -203,6 +233,11 @@
 .easy-autocomplete-container ul li {
 	font-size: 1em !important;
 	padding: 0px 5px !important;
+}
+
+/* Box */
+.negativo .aw-box__value {
+	color: red;
 }
 
 /* Tabela Item */
@@ -278,7 +313,41 @@
 	font-size: 1.6em;
 }
 
+.bw-tabela-item__painel-exclusao {
+    position: absolute;
+    top: 0;
+    right: 100000px;
+	height: 100%;
+    width: 50%;
+    
+    text-align: center;
+    padding-top: 35px;
+    
+	background-color: #f0ad4e;
+	
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+
+.solicitando-exclusao .bw-tabela-item__painel-exclusao {
+	right: 0;
+	opacity: 1;
+}
+
+.bw-tabela-item__titulo-exclusao {
+    display: block;
+    margin-bottom: 5px;
+    
+	color: #fff;
+    font-size: 1.3em;
+}
+
 @media (min-width: 768px) { /* screen-sm-min */
+	.bw-tabela-item__painel-exclusao {
+		width: 40%;
+		padding-top: 10px;
+	}
+	
 	.bw-tabela-item__coluna {
 		float: left;
 		margin-left: 0px;

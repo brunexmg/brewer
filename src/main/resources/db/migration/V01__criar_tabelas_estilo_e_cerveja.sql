@@ -1,10 +1,10 @@
 CREATE TABLE estilo (
-	codigo SERIAL PRIMARY KEY,
+	codigo BIGSERIAL PRIMARY KEY,
 	nome VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE cerveja (
-	codigo SERIAL PRIMARY KEY,
+	codigo BIGSERIAL PRIMARY KEY,
 	sku VARCHAR(50) NOT NULL,
 	nome VARCHAR(80) NOT NULL,
 	descricao TEXT NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE cerveja (
 	comissao DECIMAL(10,2) NOT NULL,
 	sabor VARCHAR(50) NOT NULL,
 	origem VARCHAR(50) NOT NULL,
-	codigo_estilo INTEGER NOT NULL,
+	codigo_estilo BIGINT NOT NULL,
 	FOREIGN KEY(codigo_estilo) REFERENCES estilo(codigo)
 );
 

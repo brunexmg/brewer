@@ -73,6 +73,18 @@ Brewer.MaskDate = (function () {
 	return MaskDate;
 }());
 
+Brewer.MaskHour = (function () {
+	function MaskHour() {
+		this.inputHour = $('.js-hour');
+	}
+	
+	MaskHour.prototype.enable = function() {
+		this.inputHour.mask('00:00');
+	}
+	
+	return MaskHour;
+}());
+
 Brewer.Security = (function() {
 	
 	function Security() {
@@ -89,9 +101,14 @@ Brewer.Security = (function() {
 	return Security;
 }());
 
+numeral.language('pt-br');
+
 Brewer.formatarMoeda = function(valor) {
-	numeral.locale('pt-br');
 	return numeral(valor).format('0,0.00');
+}
+
+Brewer.recuperarValor = function(valorFormatado) {
+	return numeral().unformat(valorFormatado);
 }
 
 $(function() {
@@ -106,6 +123,9 @@ $(function() {
 	
 	var maskDate = new Brewer.MaskDate();
 	maskDate.enable();
+	
+	var maskHour = new Brewer.MaskHour();
+	maskHour.enable();
 	
 	var security = new Brewer.Security();
 	security.enable();
