@@ -14,4 +14,6 @@ public interface ClientesQueries {
 	
 	public List<Cliente> pesquisaNomeRapida(String nome);
 	
+	public Cliente buscarClienteComCidadeEstado(Cliente cliente);
+	
 }

@@ -1,7 +1,12 @@
 package com.tequila.brewer.repository.helper.venda;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.MonthDay;
+import java.time.Year;
+import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +24,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.tequila.brewer.dto.VendaMes;
+import com.tequila.brewer.model.StatusVenda;
 import com.tequila.brewer.model.TipoPessoa;
 import com.tequila.brewer.model.Venda;
 import com.tequila.brewer.repository.filter.VendaFilter;
@@ -56,6 +63,53 @@ public class VendasImpl implements VendasQueries {
 		return (Venda) criteria.uniqueResult();
 	}
 	
+	@Transactional(readOnly = true)
+	@Override
+	public BigDecimal valorTotalNoAno() {
+		Optional<BigDecimal> optional = Optional.ofNullable(
+				manager.createQuery("select sum(valorTotal) from Venda where year(dataCriacao) = :ano "
+						+ "and status =:status", BigDecimal.class)
+					.setParameter("ano", Year.now().getValue())
+					.setParameter("status", StatusVenda.EMITIDA)
+				.getSingleResult());
+		return optional.orElse(BigDecimal.ZERO);
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public BigDecimal valorTotalNoMes() {
+		Optional<BigDecimal> optional = Optional.ofNullable(
+				manager.createQuery(
+						"select sum(valorTotal) from Venda where year(dataCriacao) = :ano and "
+						+ "month(dataCriacao) = :mes "
+						+ "and status = :status", BigDecimal.class)
+					.setParameter("ano", Year.now().getValue())
+					.setParameter("mes", MonthDay.now().getMonthValue())
+					.setParameter("status", StatusVenda.EMITIDA)
+				.getSingleResult());
+				
+				return optional.orElse(BigDecimal.ZERO);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public BigDecimal valorTicketMedioNoAno() {
+		Optional<BigDecimal> optional = Optional.ofNullable(
+				manager.createQuery("select sum(valorTotal)/count(*) from Venda where year(dataCriacao) = :ano "
+						+ "and status =:status", BigDecimal.class)
+					.setParameter("ano", Year.now().getValue())
+					.setParameter("status", StatusVenda.EMITIDA)
+				.getSingleResult());
+		
+		return optional.orElse(BigDecimal.ZERO);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<VendaMes> totalPorMes() {
+		return manager.createNamedQuery("Venda.totalPorMes").getResultList();
+	}
+	
 	private Long total(VendaFilter filtro) {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class);
 		adicionarFiltro(filtro, criteria);
@@ -65,6 +119,7 @@ public class VendasImpl implements VendasQueries {
 	
 	private void adicionarFiltro(VendaFilter filtro, Criteria criteria) {
 		criteria.createAlias("cliente", "c");
+//		.add(Restrictions.sqlRestriction("TRANSLATE(c1_.nome,'áàãéèíóòúç','aaaeeioouc') ILIKE  '%" +filtro.getNomeCliente() + "%'"));
 		
 		if (filtro != null) {
 			if (!StringUtils.isEmpty(filtro.getCodigo())) {
@@ -81,7 +136,7 @@ public class VendasImpl implements VendasQueries {
 			}
 			
 			if (filtro.getAte() != null) {
-				LocalDateTime ate = LocalDateTime.of(filtro.getAte(), LocalTime.of(23,590));
+				LocalDateTime ate = LocalDateTime.of(filtro.getAte(), LocalTime.of(23,59));
 				criteria.add(Restrictions.le("dataCriacao", ate));
 			}
 			
@@ -94,7 +149,7 @@ public class VendasImpl implements VendasQueries {
 			}
 			
 			if (!StringUtils.isEmpty(filtro.getNomeCliente())) {
-				criteria.add(Restrictions.sqlRestriction("TRANSLATE({alias}.nome,'áàãéèíóòúç','aaaeeioouc') ILIKE  '%" +filtro.getNomeCliente() + "%'"));
+				criteria.add(Restrictions.sqlRestriction("TRANSLATE(c1_.nome,'áàãéèíóòúç','aaaeeioouc') ILIKE  '%" +filtro.getNomeCliente() + "%'"));
 			}
 			
 			if (!StringUtils.isEmpty(filtro.getCpfOuCnpjCliente())) {

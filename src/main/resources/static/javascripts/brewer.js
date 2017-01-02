@@ -38,20 +38,30 @@ Brewer.MaskPhoneNumber = (function() {
 
 Brewer.MaskCep = (function() {
 	function MaskCep() {
-		this.imputCep = $('#cep');
+		this.inputCep = $('.js-cep');
 	}
 	
 	MaskCep.prototype.enable = function() {
-		var maskBehavior = function (val) {
-			  return val.replace(/\D/g, '').length === 8 ? null : '00.000-000';
-		},
-		options = {
-			onKeyPress: function(val, e, field, options) {
-				field.mask(maskBehavior.apply({}, arguments), options);
-			}		
-		};
-		this.imputCep.mask(maskBehavior, options);
+		this.inputCep.mask('00.000-000');
 	}
+	
+//	MaskCep.prototype.enable = function() {
+//		var maskBehavior = function (val) {
+//			val = val.replace(/\./g, '');
+//			val = val.replace(/\-/g, '');
+//
+//			console.log('tamanho:',val.length);
+//			console.log('depois:',val);
+//			console.log('return:',val.replace(/\D/g, '').length === 8 ? null : '00.000-000');
+//			return val.replace(/\D/g, '').length === 9 ? null : '00.000-000';
+//		},
+//		options = {
+//			onKeyPress: function(val, e, field, options) {
+//				field.mask(maskBehavior.apply({}, arguments), options);
+//			}		
+//		};
+//		this.imputCep.mask(maskBehavior, options);
+//	}
 	
 	return MaskCep;
 }());

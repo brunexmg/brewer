@@ -28,8 +28,9 @@ public class Endereco implements Serializable {
 	private Estado estado;
 	
 	public Estado getEstado() {
-		return estado;
+		return this.cidade != null ? this.cidade.getEstado() : null;
 	}
+	
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}

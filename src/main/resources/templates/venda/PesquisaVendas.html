@@ -37,9 +37,9 @@
 				
 				<div class="form-group col-sm-6">
 					<label class="control-label" for="status">Status</label>
-					<select id="status" class="form-control" >
+					<select id="status" class="form-control" th:field="*{status}">
 						<option value="">Todos os estilos</option>
-						<option ></option>
+						 <option th:each="status : ${todosStatus}" th:value="${status}" th:text="${status.descricao}"></option>
 					</select>
 				</div>
 			</div>
@@ -48,17 +48,17 @@
 				<div class="col-sm-6 form-group">
 					<label for="dataCriacaoInicial">Data de criação</label>
 					<div class="form-inline">
-						<input type="text" class="form-control aw-form-control-inline-sm js-date" id="dataCriacaoInicial" />
+						<input type="text" class="form-control aw-form-control-inline-sm js-date" th:field="*{desde}" id="dataCriacaoInicial" />
 						<label for="dataCriacaoFinal" class="aw-form-between">até</label>
-						<input type="text" class="form-control aw-form-control-inline-sm js-date" id="dataCriacaoFinal" />
+						<input type="text" class="form-control aw-form-control-inline-sm js-date" th:field="*{ate}" id="dataCriacaoFinal" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group">
 					<label for="valorMinimo">Valor total</label>
 					<div class="form-inline">
-						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" id="valorMinimo" />
+						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" th:field="*{valorMinimo}" id="valorMinimo" />
 						<label for="valorMaximo" class="aw-form-between">até</label>
-						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" id="valorMaximo" />
+						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" th:field="*{valorMaximo}" id="valorMaximo" />
 					</div>
 				</div>
 			</div>
@@ -66,11 +66,11 @@
 			<div class="row">
 				<div class="form-group col-sm-6">
 					<label class="control-label" for="nomeCliente">Nome cliente</label>
-					<input type="text" class="form-control" id="nomeCliente" />
+					<input type="text" class="form-control" th:field="*{nomeCliente}" id="nomeCliente" />
 				</div>
 				<div class="form-group col-sm-6">
 					<label class="control-label" for="cpfOuCnpj">CPF/CNPJ</label>
-					<input type="text" class="form-control" id="cpfOuCnpj" />
+					<input type="text" class="form-control" th:field="*{cpfOuCnpjCliente}" id="cpfOuCnpj" />
 				</div>
 			</div>
 			

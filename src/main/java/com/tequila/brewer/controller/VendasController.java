@@ -1,5 +1,6 @@
 package com.tequila.brewer.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,14 +21,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tequila.brewer.controller.page.PageWrapper;
 import com.tequila.brewer.controller.validator.VendaValidator;
+import com.tequila.brewer.dto.VendaMes;
 import com.tequila.brewer.mail.Mailer;
 import com.tequila.brewer.model.Cerveja;
 import com.tequila.brewer.model.ItemVenda;
+import com.tequila.brewer.model.StatusVenda;
+import com.tequila.brewer.model.TipoPessoa;
 import com.tequila.brewer.model.Venda;
 import com.tequila.brewer.repository.Cervejas;
 import com.tequila.brewer.repository.Vendas;
@@ -144,6 +149,9 @@ public class VendasController {
 	public ModelAndView pesquisar(VendaFilter vendaFilter, BindingResult result,
 			@PageableDefault(size = 20) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("venda/PesquisaVendas");
+		mv.addObject("todosStatus", StatusVenda.values());
+		mv.addObject("tiposPessoa", TipoPessoa.values());
+		
 		
 		PageWrapper<Venda> paginaWrapper = new PageWrapper<>(vendas.filtrar(vendaFilter, pageable), httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
@@ -175,6 +183,11 @@ public class VendasController {
 		}
 		attributes.addFlashAttribute("mensagem", "Venda cancelada com sucesso");
 		return new ModelAndView("redirect:/vendas/" + venda.getCodigo());
+	}
+	
+	@GetMapping("/totalPorMes")
+	public @ResponseBody List<VendaMes> listarTotalVendaPorMes() {
+		return vendas.totalPorMes();
 	}
 
 	private ModelAndView mvTabelaItensVenda(String uuid) {

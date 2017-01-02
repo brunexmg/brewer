@@ -3,6 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
 	xmlns:brewer="http://brewer.tequila.com">
 
 <head>
@@ -49,10 +50,6 @@
 							<brewer:order page="${pagina}" field="nome" text="Nome" />
 				
 						</th>
-<!-- 						<th class="table-estilos-col-nome"> -->
-<!-- 						Nome -->
-<!-- 						<span class="dropup"><span class="caret"></span></span> -->
-<!-- 						</th> -->
 
 						<th class="table-estilos-col-acoes"></th>
 					</tr>
@@ -64,10 +61,12 @@
 						<td class="text-center" th:text="${estilo.codigo}">0</td>
 						<td th:text="${estilo.nome}">Estilo Nome</td>
 						<td class="text-center">
-							<a class="btn btn-link btn-xs" title="Editar">
+							<a class="btn btn-link btn-xs js-tooltip" title="Editar"
+								th:href="@{/estilos/{codigo}(codigo=${estilo.codigo})}">
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>
-							<a class="btn btn-link btn-xs" title="Excluir">
+							<a class="btn btn-link btn-xs js-tooltip js-exclusao-btn" title="Excluir"  href="#" 
+								data:url="@{/estilos/{codigo}(codigo=${estilo.codigo})}" data:objeto="${estilo.nome}">
 								<i class="glyphicon glyphicon-remove"></i>
 							</a>
 						</td>
@@ -80,37 +79,7 @@
 		</div>
 
 		<brewer:pagination page="${pagina}" />
-
-<!-- 		<div class="col-sm-12 text-center" th:if="${not pagina.vazia}" th:remove="${pagina.unicaPagina} ? all"> -->
-<!-- 			<nav> -->
-<!-- 				<ul class="pagination pagination-sm" th:with="paginaAtual = ${pagina.atual}"> -->
-<!-- 					<li th:class="${pagina.primeira} ? disabled"> -->
-<!-- 						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a> -->
-<!-- 					</li> -->
-					
-<!-- 					<li th:if="${(paginaAtual-2) > 0}"> -->
-<!-- 						<a th:href="${pagina.urlParaPagina(paginaAtual - 2)}"><span>...</span></a> -->
-<!-- 					</li> -->
-					
-<!-- 					<th:block th:each="p : ${#numbers.sequence(1,pagina.total)}" th:with="numeroPagina = ${p - 1} ">				 -->
-
-<!-- 						<li th:if="${p+1 >= paginaAtual && p-1 <= paginaAtual+2}" th:class="${paginaAtual == numeroPagina} ? active"> -->
-<!-- 							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a> -->
-<!-- 						</li> -->
-						
-<!-- 					</th:block>	 -->
-	
-<!-- 					<li th:if="${(paginaAtual+3) < pagina.total}"> -->
-<!-- 						<a th:href="${pagina.urlParaPagina(paginaAtual + 2)}"><span>...</span></a> -->
-<!-- 					</li> -->
-								
-<!-- 					<li th:class="${pagina.ultima} ? disabled"> -->
-<!-- 						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a> -->
-<!-- 					</li> -->
-<!-- 				</ul> -->
-<!-- 			</nav> -->
-<!-- 		</div> -->
-		
+				
 	</div>
 	
 </section>	

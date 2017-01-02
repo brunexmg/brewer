@@ -7,6 +7,7 @@ import javax.persistence.PersistenceContext;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
@@ -35,6 +36,7 @@ public class ClientesImpl implements ClientesQueries {
 	public Page<Cliente> filtrar(ClienteFilter filtro, Pageable pageable) {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Cliente.class);
 	
+		criteria.addOrder(Order.asc("codigo"));
 		paginacaoUtil.preparar(criteria, pageable);
 		
 		adicionarFiltro(filtro, criteria);
@@ -42,6 +44,17 @@ public class ClientesImpl implements ClientesQueries {
 		criteria.createAlias("c.estado", "e", JoinType.LEFT_OUTER_JOIN);
 	
 		return new PageImpl<>(criteria.list(), pageable, total(filtro));
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Cliente buscarClienteComCidadeEstado(Cliente cliente) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Cliente.class);
+		criteria.createAlias("endereco.cidade", "c", JoinType.LEFT_OUTER_JOIN);
+		criteria.createAlias("c.estado", "e",JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.eq("codigo", cliente.getCodigo()));
+		
+		return (Cliente) criteria.uniqueResult();
 	}
 	
 	private Long total(ClienteFilter filtro) {
