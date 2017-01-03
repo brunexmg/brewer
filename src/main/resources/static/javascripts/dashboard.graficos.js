@@ -69,7 +69,6 @@ Brewer.GraficoVendaPorOrigem = (function() {
 			cervejasNacional.unshift(obj.totalNacional);
 			cervejasInternacional.unshift(obj.totalInternacional);
 		});
-		console.log(cervejasNacional);
 		if (cervejasNacional == null || cervejasNacional.length == 0) {
 			this.semDados.removeClass('hidden');
 		} else {
