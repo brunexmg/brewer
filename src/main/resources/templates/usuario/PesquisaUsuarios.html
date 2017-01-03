@@ -83,13 +83,13 @@
 							</div>
 						</th>
 						<th class="table-usuarios-col-nome">
-						Nome
-<!-- 							<brewer:order page="${pagina}" field="sku" text="SKU" /> -->
+<!-- 						Nome -->
+							<brewer:order page="${pagina}" field="nome" text="Nome" />
 						
 						</th>
 						<th class="table-usuarios-col-email" >
-						E-mail
-<!-- 							<brewer:order page="${pagina}" field="nome" text="Nome" /> -->
+<!-- 						E-mail -->
+							<brewer:order page="${pagina}" field="email" text="E-mail" />
 						
 						</th>
 						<th class="table-usuarios-col-grupo">Grupo</th>
@@ -116,15 +116,17 @@
 								th:classappend="${usuario.ativo} ? label-success : label-danger" 
 								th:text="${usuario.ativo} ? Ativo : Inativo">Status</span>
 						</td>
-						<td class="text-center">
-							<a class="btn btn-link btn-xs js-tooltip" title="Editar"
-								th:href="@{/usuarios/{codigo}(codigo=${usuario.codigo})}">
-								<i class="glyphicon glyphicon-pencil"></i>
-							</a>
-							<a class="btn btn-link btn-xs js-tooltip  js-exclusao-btn" title="Excluir"
-								data:url="@{/usuarios/{codigo}(codigo=${usuario.codigo})}" data:objeto="${usuario.nome}">
-								<i class="glyphicon glyphicon-remove"></i>
-							</a>
+						<td class="text-center" >
+							<div sec:authorize="hasAuthority('CADASTRAR_USUARIO')" th:if="${#authentication.principal.usuario.codigo != usuario.codigo}">
+								<a class="btn btn-link btn-xs js-tooltip" title="Editar"
+									th:href="@{/usuarios/{codigo}(codigo=${usuario.codigo})}">
+									<i class="glyphicon glyphicon-pencil"></i>
+								</a>
+								<a class="btn btn-link btn-xs js-tooltip  js-exclusao-btn" title="Excluir"
+									data:url="@{/usuarios/{codigo}(codigo=${usuario.codigo})}" data:objeto="${usuario.nome}">
+									<i class="glyphicon glyphicon-remove"></i>
+								</a>
+							</div>
 						</td>
 					</tr>
 					<tr th:if="${pagina.vazia}">

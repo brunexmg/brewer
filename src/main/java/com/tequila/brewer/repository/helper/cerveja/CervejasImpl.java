@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.tequila.brewer.dto.CervejaDTO;
+import com.tequila.brewer.dto.ValorItensEstoque;
 import com.tequila.brewer.model.Cerveja;
 import com.tequila.brewer.repository.filter.CervejaFilter;
 import com.tequila.brewer.repository.paginacao.PaginacaoUtil;
@@ -41,6 +42,25 @@ public class CervejasImpl implements CervejasQueries {
 		adicionarFiltro(filtro, criteria);
 		
 		return new PageImpl<>(criteria.list(), pageable, total(filtro));
+	}
+	
+	@Override
+	public List<CervejaDTO> porSkuOuNome(String skuOuNome) {
+		String jpql = "select new com.tequila.brewer.dto.CervejaDTO(codigo, sku, nome, origem, valor, foto) "
+				+ "from Cerveja where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome)";
+		
+		List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql, CervejaDTO.class)
+				.setParameter("skuOuNome", skuOuNome + "%")
+				.getResultList();
+		return cervejasFiltradas;
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public ValorItensEstoque valorItensEstoque() {
+		String jpql = "select new com.tequila.brewer.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque))"
+						+ " from Cerveja";
+		return manager.createQuery(jpql, ValorItensEstoque.class).getSingleResult();
 	}
 	
 	private Long total(CervejaFilter filtro) {
@@ -85,17 +105,6 @@ public class CervejasImpl implements CervejasQueries {
 
 	private boolean isEstiloPresente(CervejaFilter filtro) {
 		return filtro.getEstilo() != null && filtro.getEstilo().getCodigo() != null;
-	}
-
-	@Override
-	public List<CervejaDTO> porSkuOuNome(String skuOuNome) {
-		String jpql = "select new com.tequila.brewer.dto.CervejaDTO(codigo, sku, nome, origem, valor, foto) "
-				+ "from Cerveja where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome)";
-		
-		List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql, CervejaDTO.class)
-				.setParameter("skuOuNome", skuOuNome + "%")
-				.getResultList();
-		return cervejasFiltradas;
 	}
 
 }

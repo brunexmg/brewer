@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tequila.brewer.controller.page.PageWrapper;
 import com.tequila.brewer.controller.validator.VendaValidator;
 import com.tequila.brewer.dto.VendaMes;
+import com.tequila.brewer.dto.VendaOrigem;
 import com.tequila.brewer.mail.Mailer;
 import com.tequila.brewer.model.Cerveja;
 import com.tequila.brewer.model.ItemVenda;
@@ -74,6 +75,13 @@ public class VendasController {
 		
 		setUuid(venda);
 		mv.addObject("itens", venda.getItens());
+		
+		boolean status = false;
+		if (venda == null || venda.getStatus() != StatusVenda.CANCELADA) {
+			status = true;
+		}
+		mv.addObject("statusVenda", status);
+		
 //		mv.addObject("valorFrete", venda.getValorFrete());
 //		mv.addObject("valorDesconto", venda.getValorDesconto());
 //		mv.addObject("valorTotalItens", tabelaItens.getValorTotal(venda.getUuid()));
@@ -104,7 +112,7 @@ public class VendasController {
 		}
 		venda.setUsuario(usuarioSistema.getUsuario());
 		
-		 venda = cadastroVendaService.emitir(venda);
+		cadastroVendaService.emitir(venda);
 		attributes.addFlashAttribute("mensagem", String.format("Venda nº %d emitida", venda.getCodigo()));
 		return new ModelAndView("redirect:/vendas/nova");
 	}
@@ -189,10 +197,24 @@ public class VendasController {
 	public @ResponseBody List<VendaMes> listarTotalVendaPorMes() {
 		return vendas.totalPorMes();
 	}
+	
+	@GetMapping("/totalPorOrigem")
+	public @ResponseBody List<VendaOrigem> listaTotalPorOrigem() {
+		return vendas.totalPorOrigem();
+	}
 
 	private ModelAndView mvTabelaItensVenda(String uuid) {
 		ModelAndView mv = new ModelAndView("venda/TabelaItensVenda");
 		mv.addObject("itens", tabelaItens.getItens(uuid));
+		
+		boolean status = false;
+		if (tabelaItens.getItens(uuid).get(0).getVenda() == null) {	
+			status = true;
+		} else if (tabelaItens.getItens(uuid).get(0).getVenda().getStatus() != StatusVenda.CANCELADA) {
+			status = true;
+		}
+		
+		mv.addObject("statusVenda", status);
 		mv.addObject("valorTotal", tabelaItens.getValorTotal(uuid));
 		return mv;
 	}

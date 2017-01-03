@@ -19,7 +19,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
-import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -39,6 +38,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.google.common.cache.CacheBuilder;
+import com.tequila.brewer.config.format.BigDecimalFormatter;
 import com.tequila.brewer.controller.CervejasController;
 import com.tequila.brewer.controller.converter.CidadeConverter;
 import com.tequila.brewer.controller.converter.EstadoConverter;
@@ -107,10 +107,12 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		conversionService.addConverter(new EstadoConverter());
 		conversionService.addConverter(new GrupoConverter());
 		
-		NumberStyleFormatter bigDecimalFormatter = new NumberStyleFormatter("#,##0.00");
+//		NumberStyleFormatter bigDecimalFormatter = new NumberStyleFormatter("#,##0.00");
+		BigDecimalFormatter bigDecimalFormatter = new BigDecimalFormatter("#,##0.00");
 		conversionService.addFormatterForFieldType(BigDecimal.class, bigDecimalFormatter);
 		
-		NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");
+//		NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");
+		BigDecimalFormatter integerFormatter = new BigDecimalFormatter("#,##0");
 		conversionService.addFormatterForFieldType(Integer.class, integerFormatter);
 		
 		// API de datas do Java 8
@@ -130,8 +132,8 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	@Bean
 	public CacheManager cacheManager() {
 		CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder()
-				.maximumSize(3)
-				.expireAfterAccess(1, TimeUnit.MINUTES);
+				.maximumSize(10)
+				.expireAfterAccess(2, TimeUnit.HOURS);
 		
 		GuavaCacheManager cacheManager = new GuavaCacheManager();
 		cacheManager.setCacheBuilder(cacheBuilder);
@@ -150,5 +152,19 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	public DomainClassConverter<FormattingConversionService> domainClassConverter() {
 		return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
 	}
+	
+	/*  ### BEAN para internacionalização ### */
+	/*@Bean
+	public LocalValidatorFactoryBean validator() {
+		LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
+		validatorFactoryBean.setValidationMessageSource(messageSource());
+		return validatorFactoryBean;
+	}
+	
+	@Override
+	public Validator getValidator() {
+		return validator();
+	}*/
+	
 	
 }
