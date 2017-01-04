@@ -42,13 +42,15 @@ Brewer.UploadFoto = (function() {
 		
 		this.uploadDrop.addClass('hidden');
 		
-		var foto = '';
-		if (this.novaFoto.val() == 'true') {
-			foto = 'temp/';
-		}
-		foto += resposta.nome;
-		
-		var htmlFotoCerveja = this.template({foto: foto});
+//		var foto = '';
+//		if (this.novaFoto.val() == 'true') {
+//			foto = 'temp/';
+//		}
+//		foto += resposta.nome;
+//		
+//		var htmlFotoCerveja = this.template({foto: foto});
+//		this.containerFotoCerveja.append(htmlFotoCerveja);
+		var htmlFotoCerveja = this.template({url: resposta.url});
 		this.containerFotoCerveja.append(htmlFotoCerveja);
 		
 		$('.js-remove-foto').on('click', onRemoverFoto.bind(this));
@@ -58,10 +60,11 @@ Brewer.UploadFoto = (function() {
 		$('.js-foto-cerveja').remove();
 		this.uploadDrop.removeClass('hidden');
 		var url = this.containerFotoCerveja.data('url-fotos');
-		if (this.novaFoto.val() == 'true') {
-			url += '/temp';
-		}
+//		if (this.novaFoto.val() == 'true') {
+//			url += '/temp';
+//		}
 		url += '/' + this.inputNomeFoto.val();
+		console.log('url: ', url);
 		
 		$.ajax({
 			url: url,

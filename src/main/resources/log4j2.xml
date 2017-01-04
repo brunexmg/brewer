@@ -8,7 +8,7 @@
 	</Appenders>
 	
 	<Loggers>
-		<Logger name="com.tequila.brewer" level="error" />
+		<Logger name="com.tequila.brewer" level="debug" />
 		<Logger name="org.hibernate.SQL" level="debug" />
 		<Logger name="org.apache.catalina.webresources.Cache" level="error" />		
 		<Root level="error">

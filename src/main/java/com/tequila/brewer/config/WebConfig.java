@@ -68,6 +68,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	public ViewResolver viewResolver() {
 		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
 		resolver.setTemplateEngine(templateEngine());
+		resolver.setContentType("text/html;charset=UTF-8");
 		resolver.setCharacterEncoding("UTF-8");
 		return resolver;
 	}
@@ -90,6 +91,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		resolver.setApplicationContext(applicationContext);
 		resolver.setPrefix("classpath:/templates/");
 		resolver.setSuffix(".html");
+		resolver.setCharacterEncoding("UTF-8");
 		resolver.setTemplateMode(TemplateMode.HTML);
 		return resolver;
 	}

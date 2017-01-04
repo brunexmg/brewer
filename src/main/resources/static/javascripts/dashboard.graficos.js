@@ -21,25 +21,20 @@ Brewer.GraficoVendaPorMes = (function() {
 		vendaMes.forEach(function(obj) {
 			meses.unshift(obj.mes.split("/")[0] + '/' + mesesAbreviados[parseInt(obj.mes.split("/")[1])]);
 			valores.unshift(obj.total);
+		});	
+		var graficoVendasPorMes = new Chart(this.ctx, {
+			type: 'line',
+			data: {
+				labels: meses,
+				datasets: [{
+					label: 'Vendas por mês',
+					backgroundColor: 'rgba(26,179,148,0.5)',
+					pointBorderColor: 'rgba(26,179,148,1)',
+					pointBackgroundColor: '#fff',
+					data: valores
+				}]
+			},
 		});
-		
-		if (valores == null || valores.length == 0) {
-			this.semDados.removeClass('hidden');
-		} else {
-			var graficoVendasPorMes = new Chart(this.ctx, {
-				type: 'line',
-				data: {
-					labels: meses,
-					datasets: [{
-						label: 'Vendas por mês',
-						backgroundColor: 'rgba(26,179,148,0.5)',
-						pointBorderColor: 'rgba(26,179,148,1)',
-						pointBackgroundColor: '#fff',
-						data: valores
-					}]
-				},
-			});
-		}
 	}
 	
 	return GraficoVendaPorMes;
@@ -69,26 +64,22 @@ Brewer.GraficoVendaPorOrigem = (function() {
 			cervejasNacional.unshift(obj.totalNacional);
 			cervejasInternacional.unshift(obj.totalInternacional);
 		});
-		if (cervejasNacional == null || cervejasNacional.length == 0) {
-			this.semDados.removeClass('hidden');
-		} else {
-			var graficoVendasPorOrigem = new Chart(this.ctx, {
-				type: 'bar',
-				data: {
-					labels: meses,
-					datasets: [{
-						label: 'Nacional',
-						backgroundColor: 'rgba(220,220,220,0.5)',
-						data: cervejasNacional
-					},
-					{
-						label: 'Internacional',
-						backgroundColor: 'rgba(26,179,148,0.5)',
-						data: cervejasInternacional
-					}]
+		var graficoVendasPorOrigem = new Chart(this.ctx, {
+			type: 'bar',
+			data: {
+				labels: meses,
+				datasets: [{
+					label: 'Nacional',
+					backgroundColor: 'rgba(220,220,220,0.5)',
+					data: cervejasNacional
 				},
-			});
-		}
+				{
+					label: 'Internacional',
+					backgroundColor: 'rgba(26,179,148,0.5)',
+					data: cervejasInternacional
+				}]
+			},
+		});
 	}
 	
 	return GraficoVendaPorOrigem;

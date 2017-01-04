@@ -39,8 +39,8 @@ public class MailConfig {
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug("Login and Password for Mail SMTP");
-			logger.debug("username: " + env.getProperty("email.username"));
-			logger.debug("password: " + env.getProperty("password"));
+//			logger.debug("username: " + env.getProperty("email.username"));
+//			logger.debug("password: " + env.getProperty("password"));
 		}
 		
 		Properties props= new Properties();

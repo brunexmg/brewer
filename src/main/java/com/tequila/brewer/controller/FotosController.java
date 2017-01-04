@@ -32,20 +32,20 @@ public class FotosController {
 		 return resultado;
 	}
 	
-	@GetMapping("/temp/{nome:.*}")
-	public byte[] recuperarFotoTemporaria(@PathVariable String nome) {
-		return fotoStorage.recuperarFotoTemporaria(nome);
-	}
+//	@GetMapping("/temp/{nome:.*}")
+//	public byte[] recuperarFotoTemporaria(@PathVariable String nome) {
+//		return fotoStorage.recuperarFotoTemporaria(nome);
+//	}
 	
 	@GetMapping("/{nome:.*}")
 	public byte[] recuperar(@PathVariable String nome) {
 		return fotoStorage.recuperar(nome);
 	}
 	
-	@RequestMapping(path = "/temp/{nome:.*}", method = { RequestMethod.DELETE })
-	public void apagarFotoTemporaria(@PathVariable String nome) {
-		fotoStorage.apagarFotoTemporaria(nome);
-	}
+//	@RequestMapping(path = "/temp/{nome:.*}", method = { RequestMethod.DELETE })
+//	public void apagarFotoTemporaria(@PathVariable String nome) {
+//		fotoStorage.apagarFotoTemporaria(nome);
+//	}
 	
 	@RequestMapping(path = "/{nome:.*}", method = { RequestMethod.DELETE })
 	public void apagarFoto(@PathVariable String nome) {
