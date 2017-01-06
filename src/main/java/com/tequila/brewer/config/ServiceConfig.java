@@ -10,9 +10,5 @@ import com.tequila.brewer.storage.FotoStorage;
 @ComponentScan(basePackageClasses = { CadastroCervejaService.class, FotoStorage.class })
 public class ServiceConfig {
 
-//	@Bean
-//	public FotoStorage fotoStorage() {
-//		return new FotoStorageLocal();
-//	}
 	
 }

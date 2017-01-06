@@ -34,13 +34,11 @@ public class MailConfig {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost("smtp.sendgrid.net");
 		mailSender.setPort(587);
-		mailSender.setUsername(env.getProperty("email.username"));
-		mailSender.setPassword(env.getProperty("password"));
+		mailSender.setUsername(env.getProperty("SENDGRID_USERNAME"));
+		mailSender.setPassword(env.getProperty("SENDGRID_PASSWORD"));
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug("Login and Password for Mail SMTP");
-//			logger.debug("username: " + env.getProperty("email.username"));
-//			logger.debug("password: " + env.getProperty("password"));
 		}
 		
 		Properties props= new Properties();

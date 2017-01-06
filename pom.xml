@@ -78,10 +78,14 @@
 	
 	<!-- AWS SDK - S3 -->
 	<aws-java-sdk-s3.version>1.10.77</aws-java-sdk-s3.version>
+	
+	<!-- Apache Commons DBCP -->
+	<commons-dbcp2.version>2.1.1</commons-dbcp2.version>
+	
   </properties>
   
   <build>
-  	<finalName>${artifactId}</finalName>
+  	<finalName>${project.artifactId}</finalName>
   
   	<plugins>
   		<plugin>
@@ -98,10 +102,57 @@
   			<version>${flyway-maven-plugin.version}</version>
   			<configuration>
   				<driver>org.postgresql.Driver</driver>
+  				<baselineOnMigrate>true</baselineOnMigrate>
   			</configuration>
   		</plugin>
+  		 <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>2.3</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals><goal>copy</goal></goals>
+                    <configuration>
+                        <artifactItems>
+                            <artifactItem>
+                                <groupId>com.github.jsimone</groupId>
+                                <artifactId>webapp-runner</artifactId>
+                                <version>8.0.30.2</version>
+                                <destFileName>webapp-runner.jar</destFileName>
+                            </artifactItem>
+                        </artifactItems>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
   	</plugins>
   </build>
+  
+  <profiles>
+  	<profile>
+  		<id>local</id>
+  	</profile>
+  	
+  	<profile>
+  		<id>prod</id>
+  		
+  		<activation>
+  			<activeByDefault>true</activeByDefault>
+  		</activation>
+  		
+  		<dependencies>
+	  		<!-- PostgreSQL -->
+		  	<dependency>
+			  	<groupId>org.postgresql</groupId>
+			  	<artifactId>postgresql</artifactId>
+			  	<version>${postgresql-connector-java.version}</version>
+			  	<scope>compile</scope>
+			</dependency>
+		</dependencies>
+  	</profile>
+  	
+  </profiles>
   
   <dependencyManagement>
   	<dependencies>
@@ -208,14 +259,6 @@
   		<version>${hibernate.version}</version>
   		<scope>compile</scope>
   	</dependency>
-  	
-  	<!-- PostgreSQL -->
-  	<dependency>
-	  	<groupId>org.postgresql</groupId>
-	  	<artifactId>postgresql</artifactId>
-	  	<version>${postgresql-connector-java.version}</version>
-	  	<scope>provided</scope>
-	</dependency>
 	
 	<!-- Spring Data JPA -->
 	<dependency>
@@ -318,6 +361,12 @@
   		<scope>compile</scope>
   	</dependency>
   	
+  	<!-- Apache Commons DBCP -->
+  	<dependency>
+  		<groupId>org.apache.commons</groupId>
+  		<artifactId>commons-dbcp2</artifactId>
+  		<version>${commons-dbcp2.version}</version>
+  	</dependency>
   	
   </dependencies>
   

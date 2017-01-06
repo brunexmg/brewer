@@ -17,8 +17,6 @@ public class CadastroCervejaService {
 	@Autowired
 	private Cervejas cervejas;
 	
-//	@Autowired
-//	private ApplicationEventPublisher publisher;
 
 	@Autowired
 	private FotoStorage fotoStorage;
@@ -27,7 +25,6 @@ public class CadastroCervejaService {
 	public void salvar(Cerveja cerveja) {
 		cervejas.save(cerveja);
 		
-//		publisher.publishEvent(new CervejaSalvaEvent(cerveja));
 	}
 	
 	@Transactional

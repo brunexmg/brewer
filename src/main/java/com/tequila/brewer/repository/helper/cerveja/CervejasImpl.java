@@ -22,6 +22,7 @@ import com.tequila.brewer.dto.ValorItensEstoque;
 import com.tequila.brewer.model.Cerveja;
 import com.tequila.brewer.repository.filter.CervejaFilter;
 import com.tequila.brewer.repository.paginacao.PaginacaoUtil;
+import com.tequila.brewer.storage.FotoStorage;
 
 public class CervejasImpl implements CervejasQueries {
 
@@ -30,6 +31,9 @@ public class CervejasImpl implements CervejasQueries {
 	
 	@Autowired
 	private PaginacaoUtil paginacaoUtil;
+	
+	@Autowired
+	private FotoStorage fotoStorage;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -52,6 +56,8 @@ public class CervejasImpl implements CervejasQueries {
 		List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql, CervejaDTO.class)
 				.setParameter("skuOuNome", skuOuNome + "%")
 				.getResultList();
+		
+		cervejasFiltradas.forEach(c -> c.setUrlThumbnailFoto(fotoStorage.getUrl(FotoStorage.THUMBNAIL_PREFIX + c.getFoto())));
 		return cervejasFiltradas;
 	}
 	
