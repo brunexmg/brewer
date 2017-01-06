@@ -45,5 +45,18 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-target/
+/target/
 
+
+
+.DS_Store
+Servers/*
+.metadata
+.settings
+.classpath
+.project
+bin/
+target/
+.mvn*
+mvnw*
+rebel.xml

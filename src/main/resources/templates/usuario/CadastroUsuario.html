@@ -81,7 +81,7 @@
 			</div>
 			
 			<div class="row">
-				<div class="col-sm-6 form-group bw-required"  brewer:classforerror="grupos">
+				<div class="col-sm-6 form-group bw-required"  brewer:classforerror="grupos" th:if="${#authentication.principal.usuario.codigo != usuario.codigo}">
 					<label for="gruposUsuarios" class="control-label">Grupos</label>
 					<div>
 					<th:block th:each="grupo : ${grupos}">
