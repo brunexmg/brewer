@@ -117,15 +117,17 @@
 								th:text="${usuario.ativo} ? Ativo : Inativo">Status</span>
 						</td>
 						<td class="text-center" >
-							<div sec:authorize="hasAuthority('CADASTRAR_USUARIO')" th:if="${#authentication.principal.usuario.codigo != usuario.codigo}">
+							<div sec:authorize="hasAuthority('CADASTRAR_USUARIO')">
 								<a class="btn btn-link btn-xs js-tooltip" title="Editar"
 									th:href="@{/usuarios/{codigo}(codigo=${usuario.codigo})}">
 									<i class="glyphicon glyphicon-pencil"></i>
 								</a>
-								<a class="btn btn-link btn-xs js-tooltip  js-exclusao-btn" title="Excluir"
-									data:url="@{/usuarios/{codigo}(codigo=${usuario.codigo})}" data:objeto="${usuario.nome}">
-									<i class="glyphicon glyphicon-remove"></i>
-								</a>
+								<div th:if="${#authentication.principal.usuario.codigo != usuario.codigo}">
+									<a class="btn btn-link btn-xs js-tooltip  js-exclusao-btn" title="Excluir"
+										data:url="@{/usuarios/{codigo}(codigo=${usuario.codigo})}" data:objeto="${usuario.nome}">
+										<i class="glyphicon glyphicon-remove"></i>
+									</a>
+								</div>
 							</div>
 						</td>
 					</tr>
