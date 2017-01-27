@@ -9,7 +9,6 @@ import java.nio.file.Path;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +17,6 @@ import com.tequila.brewer.storage.FotoStorage;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
 
-@Profile("local")
 @Component
 public class FotoStorageLocal implements FotoStorage {
 	
@@ -85,7 +83,7 @@ public class FotoStorageLocal implements FotoStorage {
 	
 	@Override
 	public String getUrl(String foto) {
-		return "http://localhost:8080/brewer/fotos/" + foto;
+		return URL + foto;
 	}
 	
 	private void criarPastas() {
